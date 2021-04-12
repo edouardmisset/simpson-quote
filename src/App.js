@@ -1,53 +1,33 @@
-import DisplayEmployee from './components/DisplayEmployee';
+import DisplaySimpson from './components/DisplaySimpson';
 import { useState } from 'react';
-import axios from 'axios';
 import './App.css';
 
-const sampleEmployee = {
-  gender: 'male',
-  name: {
-    first: 'Charlie',
-    last: 'Thompson',
-  },
-  location: {
-    street: {
-      number: 761,
-      name: 'Tay Street',
-    },
-    city: 'Timaru',
-    postcode: 76111,
-  },
-  email: 'charlie.thompson@example.com',
-  picture: {
-    medium: 'https://randomuser.me/api/portraits/med/men/40.jpg',
-  },
+const endpoint = 'https://simpsons-quotes-api.herokuapp.com/quotes';
+
+const dummyData = {
+  quote: 'I believe the children are the future... Unless we stop them now!',
+  character: 'Homer Simpson',
+  image:
+    'https://cdn.glitch.com/3c3ffadc-3406-4440-bb95-d40ec8fcde72%2FHomerSimpson.png?1497567511939',
+  characterDirection: 'Right',
 };
 
-function App() {
-  const [employee, setEmployee] = useState(sampleEmployee);
+export default function App() {
+  const [quote, setQuote] = useState(dummyData);
 
-  // * Using axios
-  // const getEmployee = () =>
-  //   axios
-  //     .get('https://randomuser.me/api?nat=en')
-  //     .then(resp => resp.data)
-  //     .then(data => setEmployee(data.results[0]));
-
-  // * Using default fetch method
-  const getEmployee2 = () =>
-    fetch('https://randomuser.me/api?nat=en')
+  // * Using the default fetch method
+  const getQuote = () =>
+    fetch(endpoint)
       .then(res => res.json())
-      .then(employeeList => setEmployee(employeeList.results[0]))
+      .then(quoteList => setQuote(quoteList[0]))
       .catch(err => console.log(err));
 
   return (
     <>
-      <DisplayEmployee employee={employee} />
-      <button type='button' onClick={getEmployee2}>
-        Get employee
+      <DisplaySimpson quote={quote} />
+      <button type='button' onClick={getQuote}>
+        Get a Simpson's quote
       </button>
     </>
   );
 }
-
-export default App;
